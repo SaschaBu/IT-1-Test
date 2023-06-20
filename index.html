@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>IT-1 Testside</title>
+        <title>Data til text fil og tilbake</title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" type="text/css" href="index.css"/>
+        <link rel="stylesheet" type="text/css" href=""/>
+
+        <script>
+            // Funksjon som lagrer et data objekt til en .txt fil
+            function download(content, fileName, contentType) {
+                let a = document.createElement("a");                    // opprett en link tagg
+                let file = new Blob([content], {type: contentType});    // Opprett et fil-objekt av samme type som overført filtype 'text/plain' og med innholdet fra 'content'
+                a.href = URL.createObjectURL(file);                     // Opprett en referanse 'href' til fil-objektet
+                a.download = fileName;                                  // sier at 'target = href' skal lastet ned til 'nedlastinger' og ikke åpnes. Tilordnet verdi med '=' er frivillig, men spesifiserer filnavn etter nedlastingen
+                a.click();                                              // Klikker på lenken og laster ned mål med href
+            }
+
+            // asynchron funksjon (venter på handling) for å lese inn en .txt fil
+            async function lesFil(fil) {
+                let tekst = await fil.text();                               // ny variable text som får blob innhold fra filen som en lang string
+                hentetData = tekst.split(',');   
+                document.getElementById("innhold").innerHTML = hentetData;                            // ny array som får del-string delt med komma tegnet
+            }
+
+            // Deklarasjon av noe data
+            const data = ["Tesla","BMW","Volkswagen","Peugeot"];
+            let hentetData = [];
+
+            // Anvendelse av funksjonen
+            download(data, 'data.txt', 'text/plain');
+        </script>
     </head>
     <body>
-        <div id="wrapper">
-            <header>Header</header>
-            <nav>
-                <ul id="wrapper2">
-                    <li><a href="">Lenke 1</a></li>
-                    <li><a href="">Lenke 2</a></li>
-                    <li><a href="">Lenke 3</a></li>
-                    <li><a href="">Lenke 4</a></li>
-                    <li><a href="">Lenke 5</a></li>
-                </ul>
-            </nav>
-            <main id="wrapper3">
-                <article>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
-                <article>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
-                <article>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
-                <article>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
-                <article>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
-                <article>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
-            </main>
-            <aside>Noe på siden</aside>
-            <footer>Footer</footer>
-        </div>
+        <!-- Laste inn data fra filen og vise på nettsiden -->
+        <input type="file" onchange="lesFil(this.files[0])">    <!-- <input> element av type 'file', resultat av valget blir send til funksjonen lesFil()-->
+        <br>
+        <pre id="innhold"></pre> <!-- <pre> tagg for fremvisning av resultatet (i stedet for <p>) -->
     </body>
 </html>
